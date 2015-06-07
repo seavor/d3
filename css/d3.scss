@@ -1,0 +1,70 @@
+$quickTransition: .5s;
+
+.barGraph {
+  background: lightblue;
+
+  &-title {
+    fill: darkred;
+    font-size: 20px;
+    x: 20px;
+    y: 40px;
+  }
+
+  &-bargroup {
+
+    text {
+      opacity: 0;
+      transition: opacity $quickTransition;
+    }
+
+    &-bar {
+      fill: blue;
+      cursor: pointer;
+      transition: fill $quickTransition;
+      &:hover {
+          fill: green;
+
+        & + text {
+          opacity: 1;
+        }
+      }
+    }
+  }
+}
+
+.pieChart {
+
+  text {
+    opacity: 0;
+    transition: opacity $quickTransition;
+  }
+
+  &-path {
+    cursor: pointer;
+    transition: opacity $quickTransition;
+    &:hover {
+      opacity: .9;
+
+      & + text {
+        opacity: 1;
+      }
+    }
+  }
+}
+
+.forceGraph {
+  &-handles {
+    cursor: pointer;
+    cursor: move;
+    transition: opacity $quickTransition;
+    &:hover {
+      opacity: .8;
+    }
+  }
+}
+
+.container > .row {
+  margin-bottom: 50px;
+  padding-bottom: 50px;
+  border-bottom: 1px solid;
+}
