@@ -167,7 +167,7 @@ var app = angular.module("app", [])
   };
 }).controller('PieChart', function(){})
 
-.directive("forceGraph", function($timeout){
+.directive("forceGraph", function(){
 
   function buildMatrix(nodes){
     linkMatrix = [];
@@ -346,4 +346,99 @@ var app = angular.module("app", [])
     scope: false,
     link: linker
   };
-}).controller('ForceGraph', function($scope){});
+}).controller('ForceGraph', function(){})
+
+.directive("geoMap", function($q){
+
+  var graph,
+    graphData,
+    rawGeoData,
+    jsonDefer,
+
+    projector,
+    path,
+
+    boroughs,
+    borders,
+
+    projections = {
+      mercator: "mercator",
+      azimuth: "azimuthalEqualArea",
+      stereographic: "stereographic"
+    }
+
+    linker = function($scope, element, attrs) {
+
+      $scope.graph = {
+        width: 800,
+        height: 500,
+        scale: 5,
+        projection: projections["mercator"]
+      }
+
+      function drawGraph() {
+        var scale = 5000;
+
+        if (graph != undefined) { graph.remove(); }
+
+        projector = d3.geo[projections[graphData.projection]]()
+          .center([-73.9, 40.7])
+          .scale(graphData.scale*10000)
+          .translate([graphData.width/2,graphData.height/2]);
+
+          console.log(rawGeoData);
+
+        path = d3.geo.path().projection(projector);
+
+        graph = d3.select(element[0]).append('svg')
+          .classed('map', true)
+          .attr('width', graphData.width)
+          .attr('height', graphData.height)
+          .style('border', "2px solid black");
+
+        boroughs = graph.selectAll('g')
+          .data(rawGeoData.features).enter().append('g');
+
+        borders = boroughs.append('path')
+          .classed('map-borough', true)
+          .attr('d', path);
+      }
+
+      function init(){
+        jsonDefer = $q.defer();
+
+        if (!rawGeoData) {
+          d3.json('/js/nyc.geojson', function(data){
+            rawGeoData = data;
+            jsonDefer.resolve();
+          });
+        } else { jsonDefer.resolve(); }
+
+        jsonDefer.promise.then(function(){
+          graphData = angular.copy($scope.graph);
+          drawGraph();
+        })
+      }
+
+      $scope.$watch('graph', function(newVals, oldVals) {
+        init();
+      }, true);
+    };
+
+  return {
+    restrict: 'E',
+    scope: false,
+    link: linker
+  };
+
+
+
+
+
+
+
+
+
+
+
+}).controller('GeoMap', function(){});

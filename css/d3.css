@@ -36,6 +36,13 @@
   .forceGraph-handles:hover {
     opacity: .8; }
 
+.map-borough {
+  cursor: pointer;
+  fill: #4bd0fa; }
+  .map-borough:hover {
+    stroke: blue;
+    fill: rgba(75, 208, 250, 0.25); }
+
 .container > .row {
   margin-bottom: 50px;
   padding-bottom: 50px;

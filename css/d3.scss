@@ -63,6 +63,17 @@ $quickTransition: .5s;
   }
 }
 
+.map {
+  &-borough {
+    cursor: pointer;
+    fill: rgba(75, 208, 250, 1);
+    &:hover {
+      stroke: blue;
+      fill: rgba(75, 208, 250, .25);
+    }
+  }
+}
+
 .container > .row {
   margin-bottom: 50px;
   padding-bottom: 50px;

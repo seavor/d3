@@ -55,7 +55,7 @@
         </form>
       </div>
     </div>
-    <div class="row" ng-controller="ForceGraph">
+    <div class="row" ng-controller="ForceGraph" ng-hide="false">
       <div class="col-md-12">
         <force-graph />
       </div>
@@ -101,6 +101,33 @@
               <option value="large">Large</option>
             </select>
           </div>
+        </form>
+      </div>
+    </div>
+    <div class="row" ng-controller="GeoMap" ng-hide="false">
+      <div class="col-md-12">
+        <geo-map />
+      </div>
+      <div class="col-md-12">
+        <form class="row">
+          <div class="col-md-12">
+            <label for="width">Width:</label>
+            <input name="width" type="number" ng-model="graph.width">
+          </div>
+          <div class="col-md-12">
+            <label for="height">Height:</label>
+            <input name="height" type="number" ng-model="graph.height">
+          </div>
+          <div class="col-md-12">
+            <label for="scale">Scale:</label>
+            <input name="scale" type="number" ng-model="graph.scale">
+          </div>
+            <label for="tertiary">Map Projector:</label>
+            <select ng-model="graph.projection">
+              <option value="mercator">Mercator</option>
+              <option value="azimuth">Azimuth</option>
+              <option value="stereographic">Stereographic</option>
+            </select>
         </form>
       </div>
     </div>
