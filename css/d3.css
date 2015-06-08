@@ -43,6 +43,27 @@
     stroke: blue;
     fill: rgba(75, 208, 250, 0.25); }
 
+.mCalc-wrapper {
+  stroke: black;
+  fill: white; }
+
+.mCalc-graph {
+  fill: lightgray;
+  stroke: black; }
+
+.mCalc-bars {
+  fill: blue;
+  cursor: pointer; }
+  .mCalc-bars:hover .mCalc-int-bar {
+    opacity: 1; }
+
+.mCalc-int-bar {
+  opacity: 0;
+  transition: opacity 0.5s; }
+
+.mCalc-ticks {
+  stroke: white; }
+
 .container > .row {
   margin-bottom: 50px;
   padding-bottom: 50px;

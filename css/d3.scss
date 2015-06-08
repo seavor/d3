@@ -74,6 +74,40 @@ $quickTransition: .5s;
   }
 }
 
+.mCalc {
+
+  &-wrapper {
+    stroke: black;
+    fill: white;
+  }
+
+  &-graph {
+    fill: lightgray;
+    stroke: black;
+  }
+
+  &-bars {
+    fill: blue;
+    cursor: pointer;
+
+    &:hover {
+      & .mCalc-int-bar {
+        opacity: 1
+      }
+    }
+  }
+
+  &-int-bar {
+    opacity: 0;
+    transition: opacity $quickTransition;
+  }
+
+  &-ticks {
+    stroke: white;
+  }
+
+}
+
 .container > .row {
   margin-bottom: 50px;
   padding-bottom: 50px;
