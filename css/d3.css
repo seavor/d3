@@ -40,29 +40,22 @@
   cursor: pointer;
   fill: #4bd0fa; }
   .map-borough:hover {
-    stroke: blue;
-    fill: rgba(75, 208, 250, 0.25); }
+    fill: #1e64fa; }
 
-.mCalc-wrapper {
+.combo {
   stroke: black;
-  fill: white; }
-
-.mCalc-graph {
-  fill: lightgray;
-  stroke: black; }
-
-.mCalc-bars {
-  fill: blue;
-  cursor: pointer; }
-  .mCalc-bars:hover .mCalc-int-bar {
-    opacity: 1; }
-
-.mCalc-int-bar {
-  opacity: 0;
-  transition: opacity 0.5s; }
-
-.mCalc-ticks {
-  stroke: white; }
+  fill: none; }
+  .combo-directive {
+    margin-top: 50px; }
+  .combo-graph {
+    stroke: gray; }
+    .combo-graph-line-group {
+      cursor: pointer; }
+      .combo-graph-line-group-wrapper:hover .combo-graph-line-label {
+        opacity: 1; }
+    .combo-graph-line-label {
+      opacity: 0;
+      transition: opacity 0.5s; }
 
 .container > .row {
   margin-bottom: 50px;

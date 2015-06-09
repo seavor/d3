@@ -14,7 +14,7 @@
 </head>
 <body ng-view>
   <div class="container">
-    <div class="row" ng-controller="BarGraph" ng-hide="true">
+    <div class="row" ng-controller="BarGraph" ng-hide="false">
       <div class="col-md-6">
         <bar-graph />
       </div>
@@ -39,7 +39,7 @@
         </form>
       </div>
     </div>
-<!--     <div class="row" ng-controller="PieChart" ng-hide="true">
+    <div class="row" ng-controller="PieChart" ng-hide="false">
       <div class="col-md-6">
         <pie-chart />
       </div>
@@ -56,7 +56,7 @@
         </form>
       </div>
     </div>
-    <div class="row" ng-controller="ForceGraph" ng-hide="true">
+    <div class="row" ng-controller="ForceGraph" ng-hide="false">
       <div class="col-md-12">
         <force-graph />
       </div>
@@ -105,7 +105,7 @@
         </form>
       </div>
     </div>
-    <div class="row" ng-controller="GeoMap" ng-hide="true">
+    <div class="row" ng-controller="GeoMap" ng-hide="false">
       <div class="col-md-12">
         <geo-map />
       </div>
@@ -131,26 +131,10 @@
             </select>
         </form>
       </div>
-    </div> -->
-    <div class="row" ng-controller="MortgageCalculator" ng-hide="false">
-      <div class="col-md-12">
-        <mortgage-calculator />
-      </div>
-      <div class="col-md-12">
-        <form class="row">
-          <div class="col-md-12">
-            <label for="years">Mortage Length (Years):</label>
-            <input name="years" type="number" ng-model="graph.years">
-          </div>
-          <div class="col-md-12">
-            <label for="amount">Amount:</label>
-            <input name="amount" type="number" ng-model="graph.amount">
-          </div>
-          <div class="col-md-12">
-            <label for="rate">Rate:</label>
-            <input name="rate" type="number" max="100" ng-model="graph.rate">
-          </div>
-        </form>
+    </div>
+    <div class="row" ng-controller="ComboGraph" ng-hide="false">
+      <div class="col-md-12 combo-directive">
+        <combo-graph />
       </div>
     </div>
   </div>

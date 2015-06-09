@@ -68,43 +68,46 @@ $quickTransition: .5s;
     cursor: pointer;
     fill: rgba(75, 208, 250, 1);
     &:hover {
-      stroke: blue;
-      fill: rgba(75, 208, 250, .25);
+      fill: rgba(30, 100, 250, 1);
     }
   }
 }
 
-.mCalc {
+.combo {
+  stroke: black;
+  fill: none;
 
-  &-wrapper {
-    stroke: black;
-    fill: white;
+  &-directive {
+    margin-top: 50px;
+  }
+
+  &-container {
+
   }
 
   &-graph {
-    fill: lightgray;
-    stroke: black;
-  }
+    stroke: gray;
 
-  &-bars {
-    fill: blue;
-    cursor: pointer;
+    &-line {
 
-    &:hover {
-      & .mCalc-int-bar {
-        opacity: 1
+      &-group {
+        cursor: pointer;
+
+        &-wrapper {
+          &:hover .combo-graph-line-label {
+            opacity: 1;
+          }
+        }
       }
+
+      &-label {
+        opacity: 0;
+        transition: opacity $quickTransition;
+      }
+
     }
   }
 
-  &-int-bar {
-    opacity: 0;
-    transition: opacity $quickTransition;
-  }
-
-  &-ticks {
-    stroke: white;
-  }
 
 }
 
