@@ -1,0 +1,42 @@
+%wireframe {
+  background: white;
+  border: 1px solid lightgray;
+
+  fill: white;
+  stroke: lightgray;
+  stroke-width: 1px;
+}
+
+%outline {
+  @extend %wireframe;
+  border: 1px solid black;
+  stroke: black;
+}
+
+#d3-tetris {
+  display: inline-block;
+
+  .d3t {
+    &-mainWrapper {
+      @extend %wireframe;
+    }
+
+    &-sideBoard {
+      @extend %wireframe;
+    }
+
+    &-playBoard {
+      @extend %wireframe;
+    }
+
+    &-safeZone {
+      @extend %outline;
+    }
+  }
+
+
+
+
+
+
+}

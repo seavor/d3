@@ -423,7 +423,18 @@ var app = angular.module("app", [])
 }).controller('GeoMap', function(){})
 
 .directive("comboGraph", function($filter){
-  console.log('Initializing Combo Graph');
+  // https://www.nsrplatform.com/#!/   -   6/8/15
+
+  function getMinMax(data, value) {
+    var minVal, maxVal;
+
+    for (var i = 0; data.length > i; i ++) {
+     minVal = !minVal || data[i][value] < minVal ? data[i][value] : minVal;
+     maxVal = !maxVal || data[i][value] > maxVal ? data[i][value] : maxVal;
+    }
+
+    return [minVal, maxVal];
+  }
 
   var config = {
 
@@ -519,7 +530,9 @@ var app = angular.module("app", [])
 
     availWidth = config.width - config.margin[1] - config.margin[3],
     availHeight = config.height - config.margin[0] - config.margin[2],
-    xRange = d3.range(0, config.data[0].data.length),
+
+    xRangeValues = getMinMax(config.data[0].data, "year"),
+    xRange = d3.range(xRangeValues[0], xRangeValues[1]),
     yRange = d3.range(0, 100),
 
     scales,
@@ -541,6 +554,10 @@ var app = angular.module("app", [])
     popIdx,
     lineBuildIdx = 0,
 
+    xAxis,
+    yAxis,
+
+
 
 
 
@@ -556,12 +573,21 @@ var app = angular.module("app", [])
           .domain(yRange).range([0, availHeight]),
 
         ratio: {
-          volume: 5000000000, // $10b <= ???
-          loans: 500000, // $1m
-          roi: .5,
-          loss: .5
+          volume: 10000000000, // $10b <= ???
+          loans: 1000000, // $1m
+          roi: .1,
+          loss: .1
         }
-      }
+      };
+
+      xAxis = d3.svg.axis()
+        .scale(scales.x)
+        .orient(["bottom"])
+        .tickValues([2011, 2012, 2013, 2014, 2015]);
+
+      yAxis = d3.svg.axis()
+        .scale(scales.y)
+        .orient(["left"])
 
       // Construct Base SVG element
       element = d3.select(element[0]).append('svg')
@@ -576,6 +602,7 @@ var app = angular.module("app", [])
         // Grouping of Graph Area
         graphGroup = element.append('g')
           .attr('transform', "translate(" + config.margin[3] + ", " + config.margin[0] + ")");
+
           // Graph Area
           graphBox = graphGroup.append('rect')
             .classed('combo-graph', true)
@@ -588,6 +615,17 @@ var app = angular.module("app", [])
             loansLines = buildLineGraph(graphGroup, config.data[popIdx], "loans");
           }
 
+          graphGroup.append('g')
+            .classed('combo-axis-x', true)
+            .attr('transform', "translate(0, " + availHeight + ")")
+            .call(xAxis).selectAll("g.tick")
+              .attr("transform", function(d, i) { return "translate(" + (scales.x.rangeBand() * i) + ", 0)"; });
+
+          graphGroup.append('g')
+            .classed('combo-axis-y', true)
+            .attr('transform', "translate(0, " + config.margin[3] + ")")
+              .call(yAxis).selectAll("g.tick")
+              .attr("transform", function(d, i) { return "translate(0, " + scales.y(i) + ")"; });
 
 
     };
@@ -603,15 +641,17 @@ var app = angular.module("app", [])
                 .data(data.data).enter().append('g')
                   .classed('combo-graph-line-group', true);
 
-      // Construct Lines
+
       lineGroup.append('line')
         .classed('combo-graph-line', true)
         .attr("stroke-width", "5")
-        .attr("x1", function(d, i){ return scales.x.rangeBand() * i; })
-        .attr("x2", function(d, i){ return scales.x.rangeBand() * (i + 1); })
+        .attr("x1", function(d, i){ return scales.x.rangeBand() * (i - 1); })
+        .attr("x2", function(d, i){ return scales.x.rangeBand() * i; })
         .attr("y1", function(d, i){ return i === 0 ? (availHeight * .75 + (20 * lineBuildIdx)) : availHeight - Math.round(scales.y(data.data[i - 1][value]) / scales.ratio[value]); })
         .attr("y2", function(d, i){ return availHeight - Math.round(scales.y(data.data[i][value]) / scales.ratio[value]); })
-        .attr("stroke", colors(lineBuildIdx));
+        .attr("stroke", colors(lineBuildIdx))
+        .style("display", function(d, i){ return i === 0 ? "none" : ""; });
+
       // Construct Dots
       lineGroup.append('circle')
         .classed('combo-graph-line-dot', true)
@@ -619,7 +659,7 @@ var app = angular.module("app", [])
         .attr("fill", colors(lineBuildIdx))
         .attr("transform", function(d, i){
           return "translate("
-            + scales.x.rangeBand() * (i + 1)
+            + scales.x.rangeBand() * i
             + ","
             + (availHeight - Math.round(scales.y(data.data[i][value]) / scales.ratio[value]))
             + ")";
