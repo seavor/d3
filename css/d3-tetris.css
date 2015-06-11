@@ -1,13 +1,22 @@
-#d3-tetris .d3t-safeZone, #d3-tetris .d3t-mainWrapper, #d3-tetris .d3t-sideBoard, #d3-tetris .d3t-playBoard {
+#d3-tetris .d3t-mainWrapper, #d3-tetris .d3t-sideBoard, #d3-tetris .d3t-playBoard, #d3-tetris .d3t-safeZone, #d3-tetris .d3t-scoreBox, #d3-tetris .d3t-btn-audio,
+#d3-tetris .d3t-btn-pause,
+#d3-tetris .d3t-btn-options,
+#d3-tetris .d3t-btn-newGame {
   background: white;
   border: 1px solid lightgray;
   fill: white;
   stroke: lightgray;
   stroke-width: 1px; }
 
-#d3-tetris .d3t-safeZone {
-  border: 1px solid black;
-  stroke: black; }
-
 #d3-tetris {
   display: inline-block; }
+  #d3-tetris .d3t-btn, #d3-tetris .d3t-btn-audio,
+  #d3-tetris .d3t-btn-pause,
+  #d3-tetris .d3t-btn-options,
+  #d3-tetris .d3t-btn-newGame {
+    cursor: pointer; }
+    #d3-tetris .d3t-btn:hover, #d3-tetris .d3t-btn-audio:hover,
+    #d3-tetris .d3t-btn-pause:hover,
+    #d3-tetris .d3t-btn-options:hover,
+    #d3-tetris .d3t-btn-newGame:hover {
+      fill: lightgray; }

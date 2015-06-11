@@ -30,13 +30,26 @@
     }
 
     &-safeZone {
-      @extend %outline;
+      @extend %wireframe;
+    }
+
+    &-scoreBox {
+      @extend %wireframe;
+    }
+
+    &-btn {
+      cursor: pointer;
+
+      &:hover {
+        fill: lightgray;
+      }
+
+      &-audio,
+      &-pause,
+      &-options,
+      &-newGame {
+        @extend %wireframe, .d3t-btn;
+      }
     }
   }
-
-
-
-
-
-
 }
