@@ -20,7 +20,7 @@
 
 
 
-  var config = {
+  var app = {
     width: 400,
     height: 500,
     selector : "d3-tetris",
@@ -63,188 +63,56 @@
 
 
 
-  endVar,
-
-  tileMatrix = d3.range(0, 10);
-  tileMatrix.forEach(function(v, i){ tileMatrix[i] = d3.range(0, 20); });
+  endVar;
 
   function initializeApplication(){
     console.log("Initializing Application");
 
     // Initialize Application Element
-    $element = $(config.id).length ?
-      $($(config.id)[0]).empty() :
-      $("<div>").attr("id", config.selector).appendTo($body);
+    $element = $(app.id).length ?
+      $($(app.id)[0]).empty() :
+      $("<div>").attr("id", app.selector).appendTo($body);
 
-    wrapper = new D3BoardObject({
-      el : d3.select("#" + $element[0].id).append("svg")
-        .attr("width", config.width)
-        .attr("height", config.height),
+    wrapper = new D3Object({
+      el: d3.select("#" + $element[0].id).append("svg")
+        .attr("width", app.width)
+        .attr("height", app.height),
       key: "wrapper",
-      width: config.width,
-      height: config.height,
-      class: config.prefix + "-mainWrapper",
-      scale: {
-        x: d3.scale.linear().domain([0, layout.wrapper.x]).range([0, config.width]),
-        y: d3.scale.linear().domain([0, layout.wrapper.y]).range([0, config.height])
+      width: app.width,
+      height: app.height,
+      class: app.prefix + "-mainWrapper",
+    }, false, false, true);
+
+    wrapper.resetDimensions = function(){
+
+      this.dimensions.width = app.width;
+      this.dimensions.height = app.height;
+
+      this.dimensions.scale = {
+        x: d3.scale.linear().domain([0, layout.wrapper.x]).range([0, this.dimensions.width]),
+        y: d3.scale.linear().domain([0, layout.wrapper.y]).range([0, this.dimensions.height])
       }
-    }).init(false, false, true);
+    }; wrapper.resetDimensions();
 
-    // fieldGroup = wrapper.config.el.append('g');
-
-    createFieldElements(wrapper);
+    initPlayboard(wrapper);
   };
 
-  function createFieldElements(playfield){
-    playBoard = new D3BoardObject({
-      el: playfield.config.el.append("g"),
-      key: "playBoard",
-      parent: playfield,
-      scaleToParent: true,
-      class: config.prefix + "-playBoard",
-    }).init(true, true, true);
+  function initPlayboard(board){
 
-      playBoard.initPlayfield = function(){
-        tileMatrix.forEach(function(i, x){
-          tileMatrix[x].forEach(function(y, o){
-            tileMatrix[x][y] = false;
-          });
-        });
-
-        return this;
-      }
-
-    safeZone = new D3BoardObject({
-      el: playfield.config.el.append("g"),
-      key: "safeZone",
-      parent: playfield,
-      scaleToParent: true,
-      class: config.prefix + "-safeZone"
-    }).init(true, true, true);
-
-    scoreBox = new D3BoardObject({
-      el: playfield.config.el.append("g"),
-      key: "scoreBox",
-      parent: playfield,
-      scaleToParent: true,
-      class: config.prefix + "-scoreBox"
-    }).init(true, true);
-
-      levelCounter = new D3TextNode({
-        el: scoreBox.config.el.append("text"),
-        key: "levelCounter",
-        parent: scoreBox,
-        scaleToParent: true,
-        class: config.prefix + "-levelCounter"
-      }).init(true, true).config.el
-        .text("Level 1");
-
-      yourScore = new D3TextNode({
-        el: scoreBox.config.el.append("text"),
-        key: "yourScore",
-        parent: scoreBox,
-        scaleToParent: true,
-        class: config.prefix + "-yourScore"
-      }).init(true, true).config.el
-        .text("000000");
-
-      highScore = new D3TextNode({
-        el: scoreBox.config.el.append("text"),
-        key: "highScore",
-        parent: scoreBox,
-        scaleToParent: true,
-        class: config.prefix + "-highScore"
-      }).init(true, true).config.el
-        .text("999999");
-
-
-    btnAudio = new D3ActionButton({
-      el: playfield.config.el.append("g"),
-      key: "btnAudio",
-      parent: playfield,
-      scaleToParent: true,
-      class: config.prefix + "-btn-audio",
-      clickEvent: function(){
-        console.log("Audio Button Clicked: ", this);
-      },
-    }).init(true, true, true).initClickEvents();
-      new D3TextNode({
-        el: btnAudio.config.el.append("text").text("Toggle Audio"),
-        parent: btnAudio,
-        scaleToParent: true
-      });
-
-    btnOptions = new D3ActionButton({
-      el: playfield.config.el.append("g"),
-      key: "btnOptions",
-      parent: playfield,
-      scaleToParent: true,
-      class: config.prefix + "-btn-options",
-      clickEvent: function(){
-        console.log("Options Button Clicked: ", this);
-      }
-    }).init(true, true, true).initClickEvents();;
-      new D3TextNode({
-        el: btnOptions.config.el.append("text").text("Options"),
-        parent: btnOptions,
-        scaleToParent: true
-      });
-
-    btnNewGame = new D3ActionButton({
-      el: playfield.config.el.append("g"),
-      key: "btnNewGame",
-      parent: playfield,
-      scaleToParent: true,
-      class: config.prefix + "-btn-newGame",
-      clickEvent: function(){
-        console.log("New Game Button Clicked: ", this);
-      }
-    }).init(true, true, true).initClickEvents();;
-      new D3TextNode({
-        el: btnNewGame.config.el.append("text").text("New Game"),
-        parent: btnNewGame,
-        scaleToParent: true
-      });
-
-    btnPause = new D3ActionButton({
-      el: playfield.config.el.append("g"),
-      key: "btnPause",
-      parent: playfield,
-      scaleToParent: true,
-      class: config.prefix + "-btn-pause",
-      clickEvent: function(){
-        console.log("Pause Button Clicked: ", this);
-      }
-    }).init(true, true, true).initClickEvents();;
-      new D3TextNode({
-        el: btnPause.config.el.append("text").text("Pause"),
-        parent: btnPause,
-        scaleToParent: true
-      });
   }
 
  /*
-  * D3 Board Objects
-  *
-  * @param [Object] data - extend's base object
-  * @param [Integer] data.x - element's x position
-  * @param [Integer] data.y - element's y position
-  * @param [Integer] data.width - element's width
-  * @param [Integer] data.height - element's height
-  * @param [d3Element] data.el - container for d3 G element
-  * @param [String] data.class - class for element
-  * @param [d3Scale] data.scale - d3 scale for element's x/y axes
+  * Custom-Wrapped D3 Object
   */
 
-  function D3Object(data){
-    this.config = $.extend({
+  function D3ConfigObject(data){
+    return $.extend({
       el: {},
       class: "",
       x: 0,
       y: 0,
       key: "",
       parent: "",
-      scaleToParent: false,
       width: 0,
       height: 0,
       scale: {
@@ -252,65 +120,78 @@
         y: {}
       }
     }, data);
+  }
 
-    this.init = function(gridPosition, calcScale, addRect){
-      if (this.config.scaleToParent) {
-        this.config.width = this.config.parent.config.scale.x(layout[this.config.key].x);
-        this.config.height = this.config.parent.config.scale.y(layout[this.config.key].y);
-      }
+  function D3Object(data, initDimensions, positionToGrid, addFrame){
+    var config =  new D3ConfigObject(data);
 
-      if (gridPosition && !!layout[this.config.key]) {
-        this.config.el.attr("transform",  "translate("
-          + this.config.parent.config.scale.x(layout[this.config.key].grid[0]) + ", "
-          + this.config.parent.config.scale.y(layout[this.config.key].grid[1]) + ")"
-        );
-      }
+    if (initDimensions) { setDimensions(); }
+    if (positionToGrid && !!layout[config.key]) { setToGrid(); }
+    if (addFrame) { addRect(); }
 
 
-      if (calcScale && !!layout[this.config.key]) {
-        this.config.scale = {
-          x: d3.scale.linear().domain([0, layout[this.config.key].x]).range([0, this.config.parent.config.scale.x(layout[this.config.key].x)]),
-          y: d3.scale.linear().domain([0, layout[this.config.key].y]).range([0, this.config.parent.config.scale.y(layout[this.config.key].y)])
+    function setDimensions(){
+      config.width = config.parent.dimensions.scale.x(layout[config.key].x);
+      config.height = config.parent.dimensions.scale.y(layout[config.key].y);
+
+      config.scale = {
+          x: d3.scale.linear()
+            .domain([0, layout[config.key].x])
+            .range([0, config.parent.dimensions.scale.x(layout[config.key].x)]),
+          y: d3.scale.linear()
+            .domain([0, layout[config.key].y])
+            .range([0, config.parent.dimensions.scale.y(layout[config.key].y)])
         }
-      }
+    }
 
-      if (addRect) {
-        this.config.el.append("rect")
-          .classed(this.config.class, true)
-          .attr("width", this.config.width)
-          .attr("height", this.config.height);
-      }
+    function setToGrid(){
+      config.el.attr("transform",  "translate("
+        + config.parent.dimensions.scale.x(layout[config.key].grid[0]) + ", "
+        + config.parent.dimensions.scale.y(layout[config.key].grid[1]) + ")"
+      );
+    }
 
-      return this;
+    function addRect(width, height, pos){
+      var temp = config.el.append("rect")
+        .attr("width", width || config.width)
+        .attr("height", height || config.height);
+
+        if (pos) {
+          temp.attr("transform", "translate(" + pos[0] + "," + pos[1] + ")")
+        }
+
+      return config.el;
+    }
+
+    return {
+      element: function(el){
+          if (!!el & typeof(el) == Object) { config.el = el; }
+          return config.el;
+        },
+      parent: function(el){
+          if (!!el & typeof(el) == Object) { config.parent = el; }
+          return config.parent;
+        },
+      key: function(key){
+          if (!!key & typeof(key) == String) { config.key = key; }
+          return config.key;
+        },
+      dimensions: {
+          height: config.height,
+          width: config.width,
+          x: config.x,
+          y: config.y,
+          scale: {
+            x: config.scale.x,
+            y: config.scale.y,
+          }
+        },
+
+      addRect: addRect,
+      resetDimensions: setDimensions
     }
   }
 
-  function D3BoardObject(data){
-    D3Object.apply(this, arguments);
-  } D3BoardObject.prototype.constructor = D3Object;
-
-
-  function D3ActionButton(data){
-    D3Object.apply(this, arguments);
-
-    this.initClickEvents = function(){
-      $(this.config.el.select("rect")[0]).on('click', this.config.clickEvent);
-      return this;
-    }
-  } D3ActionButton.prototype.constructor = D3Object;
-
-  function D3TextNode(data){
-    D3Object.apply(this, arguments);
-  } D3TextNode.prototype.constructor = D3Object;
-
-  function D3Modal(data){
-    var modal = wrapper.append('g')
-      .attr("id", "d3-tetris-modal");
-
-    // modal.append("rect")
-    //   .attr("width", config.width)
-    //   .attr("height", config.height);
-  }
 
 
   $document.ready(function(){ initializeApplication(); });
