@@ -50,6 +50,7 @@
   $element,
 
   wrapper,
+  fieldGroup,
   sideBoard,
   playBoard,
 
@@ -62,7 +63,10 @@
 
 
 
-  endVar;
+  endVar,
+
+  tileMatrix = d3.range(0, 10);
+  tileMatrix.forEach(function(v, i){ tileMatrix[i] = d3.range(0, 20); });
 
   function initializeApplication(){
     console.log("Initializing Application");
@@ -86,6 +90,8 @@
       }
     }).init(false, false, true);
 
+    // fieldGroup = wrapper.config.el.append('g');
+
     createFieldElements(wrapper);
   };
 
@@ -97,6 +103,16 @@
       scaleToParent: true,
       class: config.prefix + "-playBoard",
     }).init(true, true, true);
+
+      playBoard.initPlayfield = function(){
+        tileMatrix.forEach(function(i, x){
+          tileMatrix[x].forEach(function(y, o){
+            tileMatrix[x][y] = false;
+          });
+        });
+
+        return this;
+      }
 
     safeZone = new D3BoardObject({
       el: playfield.config.el.append("g"),
@@ -238,7 +254,6 @@
     }, data);
 
     this.init = function(gridPosition, calcScale, addRect){
-      console.log(this);
       if (this.config.scaleToParent) {
         this.config.width = this.config.parent.config.scale.x(layout[this.config.key].x);
         this.config.height = this.config.parent.config.scale.y(layout[this.config.key].y);
