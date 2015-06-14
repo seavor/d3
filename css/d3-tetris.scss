@@ -17,6 +17,11 @@
   display: inline-block;
 
   .d3t {
+    &-frame {
+      stroke: black;
+      fill: white;
+    }
+
     &-mainWrapper {
       @extend %wireframe;
     }

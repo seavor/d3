@@ -10,6 +10,9 @@
 
 #d3-tetris {
   display: inline-block; }
+  #d3-tetris .d3t-frame {
+    stroke: black;
+    fill: white; }
   #d3-tetris .d3t-btn, #d3-tetris .d3t-btn-audio,
   #d3-tetris .d3t-btn-pause,
   #d3-tetris .d3t-btn-options,

@@ -18,8 +18,6 @@
     //   });
     // })();
 
-
-
   var app = {
     width: 400,
     height: 500,
@@ -44,22 +42,22 @@
     endVar:   { x: 0, y: 0 },
   },
 
+  pieces = {
+    cube  : newD3Matrix(4, 2, [[0, 0],[0, 1],[1, 0],[1, 1]]),
+    line  : newD3Matrix(4, 2, [[0, 1],[1, 1],[2, 1],[3, 1]]),
+    el    : newD3Matrix(4, 2, [[0, 1],[0, 0],[1, 0],[2, 0]]),
+    jay   : newD3Matrix(4, 2, [[0, 0],[1, 0],[2, 0],[2, 1]]),
+    zee   : newD3Matrix(4, 2, [[0, 1],[1, 1],[1, 0],[2, 0]]),
+    beezee: newD3Matrix(4, 2, [[0, 0],[1, 0],[1, 1],[2, 1]]),
+    tri   : newD3Matrix(4, 2, [[0, 0],[1, 0],[2, 0],[1, 1]])
+  },
+
   // HTML DOM-level elements (jQuery objects)
   $document = $(document),
   $body = $("body"),
   $element,
 
-  wrapper,
-  fieldGroup,
-  sideBoard,
-  playBoard,
 
-  safeZone,
-  textArea,
-    levelCounter,
-
-  audioTog,
-  btnOptions,
 
 
 
@@ -94,10 +92,22 @@
       }
     }; wrapper.resetDimensions();
 
-    initPlayboard(wrapper);
+    initializePlayboard(wrapper);
   };
 
-  function initPlayboard(board){
+  function initializePlayboard(board){
+
+    playBoard = new D3Object({
+      el: board.element().append("g"),
+      key: "playBoard",
+      parent: board,
+      class: app.prefix + "-playBoard",
+    }, true, true, true );
+
+
+
+
+
 
   }
 
@@ -135,13 +145,13 @@
       config.height = config.parent.dimensions.scale.y(layout[config.key].y);
 
       config.scale = {
-          x: d3.scale.linear()
-            .domain([0, layout[config.key].x])
-            .range([0, config.parent.dimensions.scale.x(layout[config.key].x)]),
-          y: d3.scale.linear()
-            .domain([0, layout[config.key].y])
-            .range([0, config.parent.dimensions.scale.y(layout[config.key].y)])
-        }
+        x: d3.scale.linear()
+          .domain([0, layout[config.key].x])
+          .range([0, config.parent.dimensions.scale.x(layout[config.key].x)]),
+        y: d3.scale.linear()
+          .domain([0, layout[config.key].y])
+          .range([0, config.parent.dimensions.scale.y(layout[config.key].y)])
+      }
     }
 
     function setToGrid(){
@@ -153,6 +163,7 @@
 
     function addRect(width, height, pos){
       var temp = config.el.append("rect")
+        .classed(app.prefix + "-frame", true)
         .attr("width", width || config.width)
         .attr("height", height || config.height);
 
@@ -190,6 +201,33 @@
       addRect: addRect,
       resetDimensions: setDimensions
     }
+  }
+
+  function D3PieceGenerater(piece) {
+    var keys = Object.keys(pieces);
+
+    return pieces[piece] || pieces[keys[ keys.length * Math.random() << 0]];
+  }
+
+ /*
+  * Utility Functions
+  */
+  function newD3Matrix(x, y, config){
+    var config = config || [],
+      matrix = new Array(x),
+
+      i, o, configTemp;
+
+      for (i = 0; matrix.length > i; i++) {
+        matrix[i] = new Array(y);
+      }
+
+      for (o = 0; config.length > o; o++) {
+        configTemp = config[o];
+        matrix[configTemp[0]][configTemp[1]] = true;
+      };
+
+      return matrix;
   }
 
 
